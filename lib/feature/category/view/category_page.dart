@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../base/view_model/base_view_model.dart';
 import '../../../constant/app_constant.dart';
 import '../../../constant/material/dimen.dart';
+import '../../../util/mixin/app_exit.dart';
 import '../../../util/service/service_locator.dart';
 import '../../../util/service/view/state_event_service.dart';
 import '../../../widget/info_screen.dart';
@@ -19,7 +20,7 @@ class CategoriesPage extends StatefulWidget {
   State<CategoriesPage> createState() => _CategoriesPageState();
 }
 
-class _CategoriesPageState extends StateEventService<CategoriesPage> {
+class _CategoriesPageState extends StateEventService<CategoriesPage> with AppExit {
   late final CategoryViewModel _viewModel = locator<CategoryViewModel>(param1: eventBus);
 
   @override
@@ -35,40 +36,43 @@ class _CategoriesPageState extends StateEventService<CategoriesPage> {
       appBar: AppBar(
         title: const Center(child: Text(AppConstant.vendingTitle)),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
-              child: ChangeNotifierProvider<CategoryViewModel>(
-                create: (context) => _viewModel,
-                child: Consumer<CategoryViewModel>(
-                  builder: (context, viewModel, _) {
-                    return viewModel.categories.isNotEmpty
-                        ? GridView.count(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: defaultPadding,
-                            crossAxisSpacing: defaultPadding,
-                            childAspectRatio: 0.75,
-                            physics: const ScrollPhysics(),
-                            children: List.generate(
-                              viewModel.categories.length,
-                              (index) => CategoryTile(viewModel.categories[index]),
-                            ),
-                          )
-                        : viewModel.refill
-                            ? InfoScreen(
-                                message: AppConstant.emptyVending,
-                                withAction: AppConstant.emptyVendingAction,
-                                onAction: _viewModel.init,
-                              )
-                            : const SizedBox();
-                  },
+      body: WillPopScope(
+        onWillPop: () => onWillPop(context),
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
+                child: ChangeNotifierProvider<CategoryViewModel>(
+                  create: (context) => _viewModel,
+                  child: Consumer<CategoryViewModel>(
+                    builder: (context, viewModel, _) {
+                      return viewModel.categories.isNotEmpty
+                          ? GridView.count(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: defaultPadding,
+                              crossAxisSpacing: defaultPadding,
+                              childAspectRatio: 0.75,
+                              physics: const ScrollPhysics(),
+                              children: List.generate(
+                                viewModel.categories.length,
+                                (index) => CategoryTile(viewModel.categories[index]),
+                              ),
+                            )
+                          : viewModel.refill
+                              ? InfoScreen(
+                                  message: AppConstant.emptyVending,
+                                  withAction: AppConstant.emptyVendingAction,
+                                  onAction: _viewModel.init,
+                                )
+                              : const SizedBox();
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
