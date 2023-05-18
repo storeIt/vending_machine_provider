@@ -8,8 +8,8 @@ import '../../feature/vending/view/vending_page.dart';
 class AppRouter {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case CategoriesPage.routeName:
-        return MaterialPageRoute(builder: (BuildContext context) => const CategoriesPage());
+      case CategoryPage.routeName:
+        return MaterialPageRoute(builder: (BuildContext context) => const CategoryPage());
       case ProductsPage.routeName:
         final args = settings.arguments as String;
         return MaterialPageRoute(builder: (BuildContext context) => ProductsPage(category: args));
@@ -22,6 +22,6 @@ class AppRouter {
   }
 
   static Route<dynamic> unknownRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (BuildContext context) => const CategoriesPage());
+    return MaterialPageRoute(builder: (BuildContext context) => const CategoryPage());
   }
 }

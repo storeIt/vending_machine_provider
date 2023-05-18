@@ -1,9 +1,9 @@
 enum StreamEvent {
   closeKeyboard,
   error,
-  updateProducts,
-  updateCategories,
   pop,
+  push,
+  pushReplacementNamed,
   snackBar,
   loading,
   retrieved,

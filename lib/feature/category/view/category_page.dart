@@ -11,24 +11,17 @@ import '../../../widget/info_screen.dart';
 import '../view_model/category_view_model.dart';
 import 'category_tile.dart';
 
-class CategoriesPage extends StatefulWidget {
+class CategoryPage extends StatefulWidget {
   static const routeName = '/categories';
 
-  const CategoriesPage({Key? key}) : super(key: key);
+  const CategoryPage({Key? key}) : super(key: key);
 
   @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
+  State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _CategoriesPageState extends StateEventService<CategoriesPage> with AppExit {
-  late final CategoryViewModel _viewModel = locator<CategoryViewModel>(param1: eventBus);
-
-  @override
-  void initState() {
-    super.initState();
-
-    _viewModel.init();
-  }
+class _CategoryPageState extends StateEventService<CategoryPage> with AppExit {
+  late final CategoryViewModel _viewModel = locator<CategoryViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +56,7 @@ class _CategoriesPageState extends StateEventService<CategoriesPage> with AppExi
                               ? InfoScreen(
                                   message: AppConstant.emptyVending,
                                   withAction: AppConstant.emptyVendingAction,
-                                  onAction: _viewModel.init,
+                                  onAction: _viewModel.refillVending,
                                 )
                               : const SizedBox();
                     },

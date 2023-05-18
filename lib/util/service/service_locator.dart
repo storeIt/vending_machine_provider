@@ -2,6 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../feature/category/view_model/category_view_model.dart';
+import '../../feature/initial/view_model/initial_view_model.dart';
 import '../../feature/products/view_model/products_view_model.dart';
 import '../../feature/vending/view_model/vending_view_model.dart';
 import '../helper/logger_helper.dart';
@@ -16,7 +17,8 @@ void setupLocator() {
   locator.registerFactory<LoggerHelper>(() => LoggerHelper());
 
   // Register view models
-  locator.registerFactoryParam<CategoryViewModel, EventBus, void>((args, _) => CategoryViewModel(args));
+  locator.registerFactory<InitialViewModel>(() => InitialViewModel());
+  locator.registerFactory<CategoryViewModel>(() => CategoryViewModel());
   locator.registerFactory<ProductsViewModel>(() => ProductsViewModel());
   locator.registerFactory<VendingViewModel>(() => VendingViewModel());
 }

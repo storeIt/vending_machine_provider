@@ -4,10 +4,8 @@ class Category {
 
   Category({this.name, this.price});
 
-  Category copyWith({String? name, double? price}) {
-    return Category(
-      name: name ?? this.name,
-      price: price ?? this.price,
-    );
+  @override
+  String toString() {
+    return 'Category{name: $name, price: $price}';
   }
 }

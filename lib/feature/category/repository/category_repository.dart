@@ -7,15 +7,15 @@ class CategoryRepository extends BaseRepository {
   Future<List<Product>> fetchProducts() => restClient.fetchProducts();
 
   Future<List<Object?>> saveProducts(List<Product> products) async {
-    return await dbService.insertAll(products);
+    return await dbClient.insertAll(products);
   }
 
   Future<List<Product>> getProducts() async {
-    return await dbService.getProducts();
+    return await dbClient.getProducts();
   }
 
   Future<List<Category>> getCategories() async {
-    List<Map<String, dynamic>> categoriesInfo = await dbService.getCategories();
+    List<Map<String, dynamic>> categoriesInfo = await dbClient.getCategories();
     return categoriesInfo
         .map((result) => Category(
               name: result[DbConstant.columnCategory] as String,

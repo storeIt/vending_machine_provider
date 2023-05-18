@@ -6,6 +6,7 @@ import '../../../constant/material/dimen.dart';
 import '../../../util/helper/event_bus_event/update_products.dart';
 import '../../../util/service/service_locator.dart';
 import '../../../util/service/view/state_event_service.dart';
+import '../../../widget/info_screen.dart';
 import '../../vending/view/vending_page.dart';
 import '../view_model/products_view_model.dart';
 import 'product_tile.dart';
@@ -45,9 +46,6 @@ class _ProductsPageState extends StateEventService<ProductsPage> {
           title: Center(child: Text('Choose ${widget.category}')),
           leading: IconButton(
             onPressed: () {
-              if (_viewModel.products.isEmpty) {
-                _viewModel.requireCategoryUpdate();
-              }
               Navigator.pop(context, true);
             },
             icon: const Icon(Icons.arrow_back),
@@ -78,7 +76,7 @@ class _ProductsPageState extends StateEventService<ProductsPage> {
                                 }),
                               ),
                             )
-                          : Center(child: Text('No more ${widget.category}, choose something else'));
+                          : InfoScreen(message: 'No more ${widget.category}, choose something else');
                     },
                   ),
                 ),

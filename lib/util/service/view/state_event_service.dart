@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../base/view_model/base_view_model.dart';
 import '../../../widget/loading_indicator.dart';
-import '../../helper/event_bus_event/update_categories.dart';
-import '../../helper/event_bus_event/update_products.dart';
 import '../../helper/stream/stream_event.dart';
 import '../../mixin/view_action.dart';
 import '../service_locator.dart';
@@ -26,14 +24,19 @@ abstract class StateEventService<T extends StatefulWidget> extends State<T> with
             case StreamEvent.error:
               showError(stream.data);
               break;
-            case StreamEvent.updateProducts:
-              eventBus.fire(UpdateProducts());
-              break;
-            case StreamEvent.updateCategories:
-              eventBus.fire(UpdateCategories());
-              break;
             case StreamEvent.pop:
               Navigator.of(context).pop(true);
+              break;
+            case StreamEvent.push:
+              Navigator.of(context, rootNavigator: stream.get('root_navigator') == true)
+                  .pushNamed(stream.get('page'), arguments: stream.get('arguments'));
+              break;
+            case StreamEvent.pushReplacementNamed:
+              Navigator.pushReplacementNamed(
+                context,
+                stream.get('page'),
+                arguments: stream.get('arguments'),
+              );
               break;
             case StreamEvent.snackBar:
               showSnackBar(stream.data);

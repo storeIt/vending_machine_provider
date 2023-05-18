@@ -3,18 +3,6 @@ import '../helper/stream/stream_event.dart';
 import 'stream_action.dart';
 
 mixin VendingAction on StreamAction {
-  void showLoading() {
-    streamAction(StreamData(StreamEvent.loading, null));
-  }
-
-  void hideLoading() {
-    streamAction(StreamData(StreamEvent.retrieved, null));
-  }
-
-  void requireCategoryUpdate() {
-    streamAction(StreamData(StreamEvent.updateCategories, null));
-  }
-
   void closeKeyboard() {
     streamAction(StreamData(StreamEvent.closeKeyboard, null));
   }
@@ -23,8 +11,8 @@ mixin VendingAction on StreamAction {
     streamAction(StreamData(StreamEvent.pop, arguments));
   }
 
-  void requireProductsUpdate() {
-    streamAction(StreamData(StreamEvent.updateProducts, null));
+  void pushReplacementNamed(String routeName, [Object? arguments]) {
+    streamAction(StreamData(StreamEvent.pushReplacementNamed, {'page': routeName, 'arguments': arguments}));
   }
 
   void showSnackBar(String message) {

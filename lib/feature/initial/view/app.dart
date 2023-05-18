@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/router/app_router.dart';
-import '../../category/view/category_page.dart';
+import 'initial_page.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: CategoriesPage(),
+      home: InitialPage(),
       onGenerateRoute: AppRouter.generateRoute,
       onUnknownRoute: AppRouter.unknownRoute,
     );

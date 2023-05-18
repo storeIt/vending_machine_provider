@@ -5,14 +5,14 @@ import 'package:dio/dio.dart';
 
 import '../../constant/network_constant.dart';
 import '../../util/exception/failure.dart';
-import '../../util/service/data_base/db_service.dart';
+import '../../util/service/data_base/db_client.dart';
 import '../../util/service/networking/rest_api_service.dart';
 import '../../util/service/networking/retrofit_service.dart';
 import '../../util/service/service_locator.dart';
 
 abstract class BaseRepository {
   final RestClient restClient = locator<RetrofitService>().restClient;
-  final DbService dbService = DbService.instance;
+  final DbClient dbClient = DbClient();
 
   Future<Either<Object, T>> executeNetworkRequest<T>({required Future request}) async {
     try {

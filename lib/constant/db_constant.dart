@@ -1,7 +1,7 @@
 class DbConstant {
   static const String dbName = 'vending.db';
   static const int dbVersion = 1;
-  static const String tableVending = 'vending';
+  static const String tableName = 'vending';
 
   static const String columnId = '_id';
   static const String columnCategory = 'category';
@@ -10,4 +10,6 @@ class DbConstant {
   static const String columnPrice = 'price';
   static const String columnImageUrl = 'productImageUrl';
   static const String columnQuantity = 'quantity';
+
+  static const String dbError = 'Database error';
 }

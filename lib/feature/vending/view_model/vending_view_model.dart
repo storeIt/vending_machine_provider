@@ -1,5 +1,6 @@
 import '../../../base/view_model/base_view_model.dart';
 import '../../../constant/app_constant.dart';
+import '../../../util/helper/event_bus_event/update_products.dart';
 import '../../products/model/product.dart';
 import '../../products/repository/products_repository.dart';
 
@@ -25,18 +26,18 @@ class VendingViewModel extends BaseViewModel {
   void init(Product product) {
     _product = product;
     _totalPrice = product.price;
-    manageVending(VendingPaymentState.initial);
+    _manageVending(VendingPaymentState.initial);
   }
 
   void manageInput(String input) {
     double amount = double.parse(input);
     _totalInput += amount;
     if (_totalInput < _totalPrice) {
-      manageVending(VendingPaymentState.insufficient);
+      _manageVending(VendingPaymentState.insufficient);
     } else if (_totalInput == _totalPrice) {
-      manageVending(VendingPaymentState.sufficient);
+      _manageVending(VendingPaymentState.sufficient);
     } else {
-      manageVending(VendingPaymentState.overpaid);
+      _manageVending(VendingPaymentState.overpaid);
     }
   }
 
@@ -49,41 +50,41 @@ class VendingViewModel extends BaseViewModel {
   }
 
   void reset() async {
-    manageVending(VendingPaymentState.reset);
+    _manageVending(VendingPaymentState.reset);
     closeKeyboard();
     await Future.delayed(const Duration(seconds: 5)).then((_) {
-      manageVending(VendingPaymentState.initial);
+      _manageVending(VendingPaymentState.initial);
     });
   }
 
-  void manageVending(VendingPaymentState state) {
+  void _manageVending(VendingPaymentState state) {
     switch (state) {
       case VendingPaymentState.initial:
-        setDisplayText(AppConstant.insertCoin);
+        _setDisplayText(AppConstant.insertCoin);
         break;
       case VendingPaymentState.insufficient:
-        setDisplayText('Change: € ${_totalInput.toStringAsFixed(2)}');
+        _setDisplayText('Change: € ${_totalInput.toStringAsFixed(2)}');
         break;
       case VendingPaymentState.sufficient:
-        setDisplayText('Thank you and enjoy your ${_product.name}');
-        _onBuy();
+        _setDisplayText('Thank you and enjoy your ${_product.name}');
+        _sale();
         break;
       case VendingPaymentState.overpaid:
-        setDisplayText(
+        _setDisplayText(
             'Thank you :)\nEnjoy your ${_product.name} and take your change € ${(_totalInput - _totalPrice).toStringAsFixed(2)}');
-        _onBuy();
+        _sale();
         break;
       case VendingPaymentState.invalidInput:
-        setDisplayText('The inserted coin is not acceptable');
+        _setDisplayText('The inserted coin is not acceptable');
         break;
       case VendingPaymentState.reset:
-        setDisplayText('Take your change € $_totalInput');
+        _setDisplayText('Take your change € $_totalInput');
         _totalInput = 0;
         break;
     }
   }
 
-  void _onBuy() {
+  void _sale() {
     _totalInput = 0;
     closeKeyboard();
     if (_product.quantity > 1) {
@@ -92,15 +93,15 @@ class VendingViewModel extends BaseViewModel {
     } else if (_product.quantity <= 1) {
       _repository.deleteProduct(_product.id).then((value) {
         if (value == 1) {
-          requireProductsUpdate();
           showSnackBar(_displayText);
+          eventBus.fire(UpdateProducts());
           pop();
         }
       });
     }
   }
 
-  void setDisplayText(String text) {
+  void _setDisplayText(String text) {
     _displayText = text;
     notifyListeners();
   }
