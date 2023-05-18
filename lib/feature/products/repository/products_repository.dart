@@ -6,12 +6,4 @@ class ProductsRepository extends BaseRepository {
     final List<Map<String, dynamic>> result = await dbClient.getProductsByCategory(category);
     return result.map((item) => Product.fromMap(item)).toList();
   }
-
-  Future<void> updateQuantity(Product product) async {
-    await dbClient.updateQuantity(product);
-  }
-
-  Future<int> deleteProduct(int id) async {
-    return await dbClient.deleteProduct(id);
-  }
 }

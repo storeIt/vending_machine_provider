@@ -2,7 +2,7 @@ import '../../../base/view_model/base_view_model.dart';
 import '../../../constant/app_constant.dart';
 import '../../../util/helper/event_bus_event/update_products.dart';
 import '../../products/model/product.dart';
-import '../../products/repository/products_repository.dart';
+import '../repository/vending_repository.dart';
 
 enum VendingPaymentState {
   initial,
@@ -14,7 +14,7 @@ enum VendingPaymentState {
 }
 
 class VendingViewModel extends BaseViewModel {
-  final ProductsRepository _repository = ProductsRepository();
+  final VendingRepository _repository = VendingRepository();
   late final Product _product;
   double _totalInput = 0;
   double _totalPrice = 0;
