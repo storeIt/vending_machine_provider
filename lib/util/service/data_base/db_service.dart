@@ -4,38 +4,29 @@ import 'package:sqflite/sqflite.dart';
 import '../../../constant/db_constant.dart';
 
 abstract class DbService {
-  static const databaseVersion = 1;
-
   Database? _database;
-
-  Future<Database> getDb() async {
-    _database ??= await _getDatabase();
+  Future<Database> get database async {
+    if (_database != null) {
+      return _database!;
+    }
+    _database = await _open();
     return _database!;
   }
 
-  Future<Database> _getDatabase() async {
-    return openDatabase(
-      join(await getDatabasesPath(), DbConstant.dbName),
-      onCreate: (db, version) async {
-        final batch = db.batch();
-        _createVendingTable(batch);
-      },
-      version: databaseVersion,
-    );
-  }
-
-  void _createVendingTable(Batch batch) {
-    batch.execute(
-      ''' 
-      CREATE TABLE ${DbConstant.tableName} ( 
-        ${DbConstant.columnId} INTEGER PRIMARY KEY, 
-        ${DbConstant.columnCategory} TEXT NOT NULL,
-        ${DbConstant.categoryImageUrl} TEXT,
-        ${DbConstant.columnName} TEXT NOT NULL
-        ${DbConstant.columnPrice} REAL NOT NULL,
-        ${DbConstant.columnImageUrl} TEXT,
-        ${DbConstant.columnQuantity} INTEGER NOT NULL);
-      ''',
-    );
+  Future<Database> _open() async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, DbConstant.dbName);
+    return _database = await openDatabase(path, version: 3, onCreate: (Database db, int version) async {
+      await db.execute(''' 
+      create table ${DbConstant.tableName} ( 
+        ${DbConstant.columnId} integer primary key, 
+        ${DbConstant.columnCategory} text not null,
+        ${DbConstant.categoryImageUrl} text,
+        ${DbConstant.columnName} text not null,
+        ${DbConstant.columnPrice} real not null,
+        ${DbConstant.columnImageUrl} text,
+        ${DbConstant.columnQuantity} integer not null)
+      ''');
+    });
   }
 }

@@ -11,7 +11,7 @@ class DbClient extends DbService {
 
   Future<int> insert(Product product) async {
     try {
-      final db = await getDb();
+      final db = await database;
       var id = await db.insert(DbConstant.tableName, product.toMap());
       return id;
     } catch (e) {
@@ -22,7 +22,7 @@ class DbClient extends DbService {
 
   Future<List<Object?>> insertAll(List<Product> products) async {
     try {
-      final db = await getDb();
+      final db = await database;
       Batch batch = db.batch();
       for (Product product in products) {
         batch.insert(DbConstant.tableName, product.toMap());
@@ -36,7 +36,7 @@ class DbClient extends DbService {
 
   Future<Product?> getProduct(int id) async {
     try {
-      final db = await getDb();
+      final db = await database;
       List<Map<String, Object?>> maps = await db.query(DbConstant.tableName,
           columns: [
             DbConstant.columnId,
@@ -60,7 +60,7 @@ class DbClient extends DbService {
 
   Future<List<Product>> getProducts() async {
     try {
-      final db = await getDb();
+      final db = await database;
       List<Map<String, Object?>> maps = await db.query(DbConstant.tableName, columns: [
         DbConstant.columnId,
         DbConstant.columnName,
@@ -80,7 +80,7 @@ class DbClient extends DbService {
 
   Future<int> deleteProduct(int id) async {
     try {
-      final db = await getDb();
+      final db = await database;
       return await db.delete(
         DbConstant.tableName,
         where: '${DbConstant.columnId} = ?',
@@ -94,7 +94,7 @@ class DbClient extends DbService {
 
   Future<int> updateQuantity(Product product) async {
     try {
-      final db = await getDb();
+      final db = await database;
       return await db.update(
         DbConstant.tableName,
         product.toMap(),
@@ -109,7 +109,7 @@ class DbClient extends DbService {
 
   Future<List<Map<String, dynamic>>> getCategories() async {
     try {
-      final db = await getDb();
+      final db = await database;
       return await db.rawQuery(
           'SELECT DISTINCT ${DbConstant.columnCategory}, ${DbConstant.columnPrice} FROM ${DbConstant.tableName}');
     } catch (e) {
@@ -120,7 +120,7 @@ class DbClient extends DbService {
 
   Future<List<Map<String, dynamic>>> getProductsByCategory(String category) async {
     try {
-      final db = await getDb();
+      final db = await database;
       return await db.query(
         DbConstant.tableName,
         where: '${DbConstant.columnCategory} = ?',
