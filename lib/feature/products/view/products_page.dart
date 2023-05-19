@@ -30,7 +30,7 @@ class _ProductsPageState extends StateEventService<ProductsPage> {
     super.initState();
 
     _viewModel.getProducts(widget.category);
-    _viewModel.subscriptions.add(eventBus.on<UpdateProducts>().listen((event) {
+    _viewModel.subscriptions.add(_viewModel.eventBus.on<UpdateProducts>().listen((event) {
       _viewModel.getProducts(widget.category);
     }));
   }

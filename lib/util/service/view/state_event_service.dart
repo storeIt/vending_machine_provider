@@ -1,14 +1,11 @@
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 import '../../../base/view_model/base_view_model.dart';
 import '../../../widget/loading_indicator.dart';
 import '../../helper/stream/stream_event.dart';
 import '../../mixin/view_action.dart';
-import '../service_locator.dart';
 
 abstract class StateEventService<T extends StatefulWidget> extends State<T> with ViewAction {
-  EventBus eventBus = locator<EventBus>();
   late final LoadingIndicator loadingIndicator;
 
   @override

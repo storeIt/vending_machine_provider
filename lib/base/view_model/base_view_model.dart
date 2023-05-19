@@ -59,8 +59,8 @@ abstract class BaseViewModel extends ChangeNotifier with StreamAction, VendingAc
         products.addAll(prs);
         if (refill == true) {
           refill = false;
-          eventBus.fire(UpdateCategories());
         }
+        eventBus.fire(UpdateCategories());
       }
     });
   }
