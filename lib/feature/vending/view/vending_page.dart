@@ -59,9 +59,9 @@ class _VendingPageState extends StateEventService<VendingPage> {
                     child: Container(
                       padding: const EdgeInsets.all(defaultPadding),
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: const Color(0xFFf0ead2),
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(borderRadiusSmall),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +75,7 @@ class _VendingPageState extends StateEventService<VendingPage> {
                             ),
                           ),
                           Text(
-                            '\$${widget.product.price}',
+                            '${AppConstant.currencySymbol} ${widget.product.price}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -97,7 +97,11 @@ class _VendingPageState extends StateEventService<VendingPage> {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           hintText: AppConstant.insertCoin,
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(borderRadiusSmall),
+                            ),
+                          ),
                         ),
                         // autofocus: true,
                         onChanged: (String value) {
@@ -115,6 +119,13 @@ class _VendingPageState extends StateEventService<VendingPage> {
                         onPressed: () {
                           _viewModel.reset();
                         },
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(borderRadiusSmall),
+                            ),
+                          ),
+                        ),
                         child: const Text(AppConstant.reset),
                       ),
                     ),
@@ -129,6 +140,7 @@ class _VendingPageState extends StateEventService<VendingPage> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(borderRadiusSmall),
                     ),
                     child: ChangeNotifierProvider<VendingViewModel>(
                       create: (context) => _viewModel,

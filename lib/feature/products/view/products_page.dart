@@ -43,7 +43,8 @@ class _ProductsPageState extends StateEventService<ProductsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Center(child: Text('Choose ${widget.category}')),
+          centerTitle: true,
+          title: Text('Choose ${widget.category}'),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context, true);

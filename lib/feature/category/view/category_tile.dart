@@ -19,12 +19,13 @@ class CategoryTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(defaultPadding),
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: Colors.orange[100],
           border: Border.all(color: Colors.grey), // Outline border
           borderRadius: BorderRadius.circular(8), // Rounded corners
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: defaultPadding / 4),
