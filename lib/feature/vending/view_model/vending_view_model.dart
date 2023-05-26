@@ -2,7 +2,6 @@ import '../../../base/view_model/base_view_model.dart';
 import '../../../constant/app_constant.dart';
 import '../../../util/helper/event_bus_event/update_products.dart';
 import '../../products/model/product.dart';
-import '../repository/vending_repository.dart';
 
 enum VendingPaymentState {
   initial,
@@ -14,7 +13,6 @@ enum VendingPaymentState {
 }
 
 class VendingViewModel extends BaseViewModel {
-  final VendingRepository _repository = VendingRepository();
   late final Product _product;
   double _totalInput = 0;
   double _totalPrice = 0;
@@ -89,9 +87,9 @@ class VendingViewModel extends BaseViewModel {
     closeKeyboard();
     if (_product.quantity > 1) {
       _product.quantity--;
-      _repository.updateQuantity(_product);
+      repository.updateQuantity(_product);
     } else if (_product.quantity <= 1) {
-      _repository.deleteProduct(_product.id).then((value) {
+      repository.deleteProduct(_product.id).then((value) {
         if (value == 1) {
           showSnackBar(_displayText);
           eventBus.fire(UpdateProducts());

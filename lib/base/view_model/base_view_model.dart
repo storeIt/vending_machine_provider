@@ -12,9 +12,11 @@ import '../../util/helper/stream/stream_event.dart';
 import '../../util/mixin/stream_action.dart';
 import '../../util/mixin/vending_action.dart';
 import '../../util/service/service_locator.dart';
+import '../repository/app_repository_impl.dart';
 import '../repository/base_repository.dart';
 
 abstract class BaseViewModel extends ChangeNotifier with StreamAction, VendingAction {
+  final AppRepositoryImpl repository = AppRepositoryImpl();
   final LoggerHelper logger = locator<LoggerHelper>();
   final EventBus eventBus = locator<EventBus>();
   final List<Product> products = [];
@@ -42,18 +44,18 @@ abstract class BaseViewModel extends ChangeNotifier with StreamAction, VendingAc
     );
   }
 
-  Future<void> fetchProducts(BaseRepository repository) async {
+  Future<void> fetchProducts() async {
     executeRequest(
       repository: repository,
-      request: repository.restClient.fetchProducts(),
+      request: repository.fetchProducts(),
       success: (Right<Object, List<Product>> products) async {
-        await _saveProducts(repository, products.value);
+        await _saveProducts(products.value);
       },
     );
   }
 
-  Future<void> _saveProducts(BaseRepository repository, List<Product> prs) async {
-    await repository.dbClient.insertAll(prs).then((value) {
+  Future<void> _saveProducts(List<Product> prs) async {
+    await repository.saveProducts(prs).then((value) {
       products.clear();
       if (value.isNotEmpty) {
         products.addAll(prs);

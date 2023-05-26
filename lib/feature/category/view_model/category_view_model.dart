@@ -1,10 +1,8 @@
 import '../../../base/view_model/base_view_model.dart';
 import '../../../util/helper/event_bus_event/update_categories.dart';
 import '../../category/model/category.dart';
-import '../repository/category_repository.dart';
 
 class CategoryViewModel extends BaseViewModel {
-  final CategoryRepository _repository = CategoryRepository();
   final List<Category> categories = [];
 
   CategoryViewModel() {
@@ -15,7 +13,7 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   Future<void> getCategories() async {
-    await _repository.getCategories().then((value) {
+    await repository.getCategories().then((value) {
       _manageCategory(value);
     });
   }
@@ -31,6 +29,6 @@ class CategoryViewModel extends BaseViewModel {
   }
 
   void refillVending() async {
-    await fetchProducts(_repository);
+    await fetchProducts();
   }
 }
